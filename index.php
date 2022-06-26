@@ -1,13 +1,14 @@
 <?php
 /* token de seguridad */
-$token = "Dj7sjshdy4hdFncm547Shjsy";
+$token = "Dj7sjshdy4hdFncm547Shjsy"; // cambiar por un token aleatorio
 
 /* get post */
 $data = json_decode(file_get_contents('php://input'), true);
-$har_key = $data['har_key'];
+
+$token_key = $data['{nombre_del_token_en_el_json}'];
 
 /* validar token */
-if($har_key != $token){
+if($token_key != $token){
 	echo "Invalid token";
 	exit;
 }
@@ -24,7 +25,9 @@ $city = $data['city'];
 $comments = $data['comments'];
 
 
-$jwt = "{Código de jwt}";
+$jwt = "{Código de jwt}"; // cambiar por el código generado por el servidor
+
+//Llamado a la API de Zoom
 $ch = curl_init();
 curl_setopt_array($ch, array(
 	CURLOPT_URL => "https://api.zoom.us/v2/webinars/{ID-Webinar}/registrants",
@@ -46,10 +49,13 @@ $err = curl_error($ch);
 
 curl_close($ch);
 
+//Si la respuesta de la API de Zoom es correcta, se muestra el mensaje de registro exitoso.
 if ($err) {
+	//Manejo de errores
 	echo "cURL Error #:" . $err;
 } else {
 	echo $response;
 }
+
 ?>
 
